@@ -19,8 +19,22 @@ async function run(){
     try{
         await client.connect();
         // all collection
+        const homeCollection = client.db('collegeDB').collection('homedata');
+        const collegeCollection = client.db('collegeDB').collection('college');
 
         // all functions
+
+        // get home data
+        app.get('/homedata', async(req, res)=>{
+            const result = await homeCollection.find().toArray();
+            res.send(result);
+        } )
+
+        // get all college
+        app.get('/college', async(req, res)=>{
+            const result = await collegeCollection.find().toArray();
+            res.send(result);
+        } )
         
     }
     finally{
