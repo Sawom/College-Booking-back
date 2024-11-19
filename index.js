@@ -35,6 +35,17 @@ async function run(){
             const result = await collegeCollection.find().toArray();
             res.send(result);
         } )
+
+        // searching college
+        app.get('/search/:name', async(req, res)=>{
+            let result = await homeCollection.find({
+                "$or":[
+                    {collegeName: { $regex: req.params.name, $options: 'i'}},
+                ]
+            }).toArray()
+            // console.log(result)
+            res.send(result)
+        })
         
     }
     finally{
