@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config(); 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 
 const app = express();
@@ -36,6 +36,22 @@ async function run(){
             res.send(result);
         } )
 
+        // dynamic route for home data
+        app.get('/homedata/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await homeCollection.findOne(query);
+            res.send(result);
+        })
+
+        // dynamic route for college data
+        app.get('/college/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await collegeCollection.findOne(query);
+            res.send(result);
+        })
+
         // searching college
         app.get('/search/:name', async(req, res)=>{
             let result = await homeCollection.find({
@@ -43,7 +59,7 @@ async function run(){
                     {collegeName: { $regex: req.params.name, $options: 'i'}},
                 ]
             }).toArray()
-            // console.log(result)
+            console.log(result)
             res.send(result)
         })
         
@@ -62,3 +78,5 @@ app.get('/', (req, res) => {
 app.listen(port, ()=> {
     console.log(`college server running at ${port}` );
 }) 
+
+run().catch(err => console.log(err));
