@@ -22,8 +22,16 @@ async function run(){
         const homeCollection = client.db('collegeDB').collection('homedata');
         const collegeCollection = client.db('collegeDB').collection('college');
         const usersCollection = client.db('collegeDB').collection('users');
-
+        const admissionCollection = client.db('collegeDB').collection('admission');
+        
         // all functions
+
+        // admission collection
+        app.post('/admission', async(req, res)=>{
+            const newAdmission = req.body;
+            const result = await admissionCollection.insertOne(newAdmission);
+            res.send(result);
+        } )
 
         // post user both email, google, github
         app.post('/users', async(req, res)=>{
