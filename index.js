@@ -23,8 +23,22 @@ async function run(){
         const collegeCollection = client.db('collegeDB').collection('college');
         const usersCollection = client.db('collegeDB').collection('users');
         const admissionCollection = client.db('collegeDB').collection('admission');
-        
+        const reviewsCollection = client.db('collegeDB').collection('reviews');
+
         // all functions
+
+        // get reviews
+        app.get('/reviews' , async(req, res)=>{
+            const result = await reviewsCollection.find().toArray();
+            res.send(result);
+        } )
+
+        // post reviews
+        app.post('/reviews', async(req,res)=>{
+            const newReview = req.body;
+            const result = await reviewsCollection.insertOne(newReview);
+            res.send(result);
+        })
 
         // admission collection
         app.post('/admission', async(req, res)=>{
