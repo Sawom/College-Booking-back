@@ -33,6 +33,12 @@ async function run(){
             res.send(result);
         } )
 
+        // get admission data
+        app.get('/admission', async(req, res)=>{
+            const result = await admissionCollection.find().toArray();
+            res.send(result);
+        } )
+
         // post user both email, google, github
         app.post('/users', async(req, res)=>{
             const user = req.body;
