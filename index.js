@@ -33,9 +33,14 @@ async function run(){
             res.send(result);
         } )
 
-        // get admission data
+        // get admission data email wise
         app.get('/admission', async(req, res)=>{
-            const result = await admissionCollection.find().toArray();
+            const email = req.query.email;
+            if(!email){
+                res.send([]);
+            }
+            const query = { email: email };
+            const result = await admissionCollection.find(query).toArray();
             res.send(result);
         } )
 
