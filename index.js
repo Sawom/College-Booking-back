@@ -21,8 +21,28 @@ async function run(){
         // all collection
         const homeCollection = client.db('collegeDB').collection('homedata');
         const collegeCollection = client.db('collegeDB').collection('college');
+        const usersCollection = client.db('collegeDB').collection('users');
 
         // all functions
+
+        // post user both email, google, github
+        app.post('/users', async(req, res)=>{
+            const user = req.body;
+            const query = {email: user.email};
+            const existingUser = await usersCollection.findOne(query);
+            console.log( 'existingUser: ', existingUser);
+             if(existingUser){
+                return res.send({ message: 'user already exists!' })
+            }
+            const result = await usersCollection.insertOne(user);
+            res.send(result);
+        })
+
+        // get all users
+        app.get('/users', async(req, res)=>{
+            const result = await usersCollection.find().toArray();
+            res.send(result);
+        } )
 
         // get home data
         app.get('/homedata', async(req, res)=>{
