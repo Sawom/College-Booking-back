@@ -47,6 +47,38 @@ async function run(){
             res.send(result);
         } )
 
+        // get all admission data
+        app.get('/admission' , async(req, res)=>{
+            const result = await admissionCollection.find().toArray();
+            res.send(result);
+        } )
+
+        // get single data
+        app.get('/admission/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await admissionCollection.findOne(query);
+            res.send(result);
+        })
+
+        // update admission collection
+        app.put('/admission/:id', async(req, res) =>{
+            const id = req.params.id;
+            const updatedData = req.body;
+            const filter = { _id: new ObjectId(id) };
+            const options = {upsert: true};
+            const updateDoc = {
+                $set:{
+                    collegeName: updatedData.collegeName,
+                    name: updatedData.name,
+                    email: updatedData.email, 
+                    address: updatedData.address,
+                },
+            }
+            const result  = await admissionCollection.updateOne(filter,updateDoc,options);
+            res.send(result);
+        }  )
+
         // get admission data email wise
         app.get('/admission', async(req, res)=>{
             const email = req.query.email;
